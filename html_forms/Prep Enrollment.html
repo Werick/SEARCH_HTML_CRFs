@@ -1,0 +1,353 @@
+<!--
+      ~ The contents of this file are subject to the OpenMRS Public License
+      ~ Version 1.0 (the "License"); you may not use this file except in
+      ~ compliance with the License. You may obtain a copy of the License at
+      ~ http://license.openmrs.org
+      ~
+      ~ Software distributed under the License is distributed on an "AS IS"
+      ~ basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
+      ~ License for the specific language governing rights and limitations
+      ~ under the License.
+      ~
+      ~ Copyright (C) OpenMRS, LLC.  All Rights Reserved.
+    -->
+    <htmlform>
+
+        <style type="text/css">
+            table.screen {
+            border-collapse: collapse;
+            }
+            table.screen > tbody > tr > td, table.screen > tbody > tr > th {
+            border: 1px solid black;
+            vertical-align: baseline;
+            padding: 4px;
+            }
+        </style>
+
+        <script type="text/javascript">
+            var YES_CONCEPT_ID = 1065;
+            var NO_CONCEPT_ID = 1066;
+            var UNKNOWN_CONCEPT_ID = 1067;
+            var OTHER_CONCEPT_ID = 5622;
+            var NA_CONCEPT_ID = 1175;
+            var NONE_CONCEPT_ID = 1107;
+            var POSITIVE_CONCEPT_ID = 1847;
+            var NEGATIVE_CONCEPT_ID = 1848;
+            var NOTEST_CONCEPT_ID = 1118;
+            var ADULT = 7144;
+            var CHILD = 7143;
+
+        /* Skipping Patterns and dropped fields*/
+            
+            $j(function(){
+                
+                /*validate Fields by avoiding invalid input*/
+                
+                getField('consentY.value').change(function(){
+                    if(getValue('consentY.value')== YES_CONCEPT_ID)
+                        setValue('consentN.value', '')
+                });
+
+                getField('consentN.value').change(function(){
+                    if(getValue('consentN.value')== NO_CONCEPT_ID)
+                        setValue('consentY.value', '')
+                });
+
+                getField('confirmP.value').change(function(){
+                    if(getValue('confirmP.value')== POSITIVE_CONCEPT_ID)
+                        setValue('confirmU.value', '')
+                        setValue('confirmN.value', '')
+                });
+
+                getField('confirmU.value').change(function(){
+                    if(getValue('confirmU.value')== UNKNOWN_CONCEPT_ID)
+                        setValue('confirmP.value', '')
+                        setValue('confirmN.value', '')
+                });
+
+                getField('confirmN.value').change(function(){
+                    if(getValue('confirmN.value')== NEGATIVE_CONCEPT_ID)
+                        setValue('confirmP.value', '')
+                        setValue('confirmU.value', '')
+                });
+                              
+                getField('willY.value').change(function(){
+                    if(getValue('willY.value')== YES_CONCEPT_ID)
+                        setValue('willN.value', '')
+                });
+
+                getField('willN.value').change(function(){
+                    if(getValue('willN.value')== NO_CONCEPT_ID)
+                        setValue('willY.value', '')
+                });
+
+                getField('swallowY.value').change(function(){
+                    if(getValue('swallowY.value')== YES_CONCEPT_ID)
+                        setValue('swallowN.value', '')
+                });
+
+                getField('swallowN.value').change(function(){
+                    if(getValue('swallowN.value')== NO_CONCEPT_ID)
+                        setValue('swallowY.value', '')
+                });
+
+                getField('Agegt15.value').change(function(){
+                    if(getValue('Agegt15.value')== ADULT)
+                        setValue('Agelt15.value', '')
+                });
+
+                getField('Agelt15.value').change(function(){
+                    if(getValue('Agelt15.value')== CHILD)
+                        setValue('Agegt15.value', '')
+                });
+
+                getField('allergN.value').change(function(){
+                    if(getValue('allergN.value')== NO_CONCEPT_ID)
+                        setValue('allergY.value', '')
+                });
+
+                getField('allergY.value').change(function(){
+                    if(getValue('allergY.value')== YES_CONCEPT_ID)
+                        setValue('allergN.value', '')
+                });
+
+                getField('activeN.value').change(function(){
+                    if(getValue('activeN.value')== NO_CONCEPT_ID)
+                        setValue('activeY.value', '')
+                });
+
+                getField('activeY.value').change(function(){
+                    if(getValue('activeY.value')== YES_CONCEPT_ID)
+                        setValue('activeN.value', '')
+                });
+
+                getField('opinionN.value').change(function(){
+                    if(getValue('opinionN.value')== NO_CONCEPT_ID)
+                        setValue('opinionY.value', '')
+                });
+
+                getField('opinionY.value').change(function(){
+                    if(getValue('opinionY.value')== YES_CONCEPT_ID)
+                        setValue('opinionN.value', '')
+                });
+
+                
+                getField('hivtestP.value').change(function(){                    
+                    if(getValue('hivtestP.value')== POSITIVE_CONCEPT_ID)
+                        setValue('hivtestN.value', '')
+                });
+
+                getField('hivtestN.value').change(function(){                    
+                    if(getValue('hivtestN.value')== NEGATIVE_CONCEPT_ID)
+                        setValue('hivtestP.value', '')
+                });
+
+                getField('HepaN.value').change(function(){                    
+                    if(getValue('HepaN.value') == NO_CONCEPT_ID)
+                        setValue('HepaY.value', '')
+                });
+
+                getField('HepaY.value').change(function(){                    
+                    if(getValue('HepaY.value')== YES_CONCEPT_ID)
+                        setValue('HepaN.value', '')
+                });
+
+            });
+        </script>
+
+        
+        <table class="screen" align="center" width="970px">
+            <tbody>
+            <tr>
+                <td>
+                    <table>
+                    <tr>
+                    <td width="25%"><b>SEARCH<br/> PrEP</b></td>
+                    
+                    <td>Facility Name <encounterLocation type="dropdown"/></td>
+                    
+                    <td width="25%" style="background-color:lightcyan;">SEARCH ID:<lookup class="value" expression="patient.getPatientIdentifier('SEARCH ID')"/></td> 
+                    </tr>
+                    <tr>
+                    <td colspan="3">Date of Review <encounterDate default="today"/>
+                    <br/>
+                    <br/>
+                    </td>
+                    </tr>
+                    <tr>
+                        <td colspan="3">Participant initials:<lookup class="value" expression="patient.personName"/>
+                        <br/>
+                        <br/>
+                        </td>
+                    </tr>
+                    </table>
+                </td>
+                </tr>
+                <tr>
+                    <td style="background-color: #696969; color: #ffffff; font-weight:bold;" align="center">
+                        <a name="page1"></a>
+                        ENROLLMENT CHECKLIST FORM
+                    </td>
+                </tr>
+              
+                <tr>
+                    <td style="font-weight:bold" align="center">
+                            INTERVIEW
+                    </td>
+                </tr>
+                <tr>
+                    <td><span id="uniselect">
+                    <table width="98%" class="screen" align="center">
+                          <tr>
+                              <td colspan="4">
+                                  <div style="float:left; padding-right: 5%">Gender:</div>
+                                  <div style="float:left; padding-right: 5%">
+                                      <lookup class="value" expression="patient.gender" />
+                                  </div>
+                                  <div style="float:left">
+                                      Date Of Birth:<loooup class="value" expression="patient.birthdate"/> Age: <lookup class="value" expression="patient.age"/><br/>
+                                      <em>(From medical record or participant report)</em>
+                                  </div>
+                              </td>
+                            <td colspan="2" style="font-style:italic">
+                                  <div style="float:right">
+                                When any box in the &quot;Exclude&quot; column is ticked, paticipant is ineligible. Complete the section and proceed to the eligibility question at the bottom. If paticipant not excluded, proceed to the next section.
+                                  </div>
+                            </td>
+                          </tr>
+                        <tr style="font-weight:bold">
+                            <td colspan="4">Selection criterion</td>
+                            <td width="23%">Include</td>
+                            <td width="17%" style="background-color: #696969;">Exclude</td>
+                          </tr>
+                          <tr>
+                              <td colspan="4">Ability and willingness to give informed written     consent/assent </td>
+                            <td width="23%"><obs id="consentY" conceptId="7130" answerConceptId="1065" answerLabel="Yes" style="checkbox"/></td>
+                            <td width="17%" style="background-color: #696969;"><obs id="consentN" conceptId="7130" answerConceptId="1066" answerLabel="No" style="checkbox"/></td>
+                          </tr>
+                          <tr>
+                            <td>Confirmed HIV-Negative<br/>
+                            within past 4 weeks:
+                            </td>
+                            <td colspan="3">
+                            <ul>
+                                <li>SEARCH Result within 4 weeks --&gt; NO RETEST</li>
+                                <li>NON-SEARCH testing site --&gt; RETEST</li>
+                                <li>Not tested in past 4 weeks --&gt; NO RETEST</li>
+                            </ul>
+                            </td>
+                            <td width="23%">
+                                <obs id="confirmN" conceptId="1544" answerConceptId="1848" answerLabel="Negative By SEARCH" style="checkbox"/><br/>
+                                <obs id="confirmU" conceptId="1544" answerConceptId="1067" answerLabel="" style="checkbox"/>
+                                Status unkown or negative <br/> by non-SEARCH testing or <br/> not within the past 4 weeks<br/>testing done below
+                                </td>
+                            <td width="17%" style="background-color: #696969;">
+                                <obs id="confirmP" conceptId="1544" answerConceptId="1847" answerLabel="" style="checkbox"/>Hiv Positive<sup>*</sup></td>
+                          </tr>
+                          <tr>
+                            <td colspan="4">Age&gt;15 years</td>
+                            <td width="23%">
+                                <obs id="Agegt15" conceptId="7145" answerConceptId="7144" answerLabel="Yes" style="checkbox"/><br/>
+                            </td>
+                            <td width="17%" style="background-color: #696969;">
+                            <obs id="Agelt15" conceptId="7145" answerConceptId="7143" answerLabel="No" style="checkbox"/></td>
+                          </tr>
+                          <tr>
+                            <td colspan="4">Willing to Initiate PrEP</td>
+                            <td width="23%"><obs id="willY" conceptId="7131" answerConceptId="1065" answerLabel="Yes" style="checkbox"/></td>
+                            <td width="17%" style="background-color: #696969;"><obs id="willN" conceptId="7131" answerConceptId="1066" answerLabel="No" style="checkbox"/></td>
+                          </tr>
+                          <tr>
+                            <td colspan="4">Ability to swallow oral medications</td>
+                            <td width="23%"><obs id="swallowY" conceptId="7132" answerConceptId="1065" answerLabel="Yes" style="checkbox"/></td>
+                            <td width="17%" style="background-color: #696969;"><obs id="swallowN" conceptId="7132" answerConceptId="1066" answerLabel="No" style="checkbox"/></td>
+                          </tr>                      
+                          <tr>
+                            <td colspan="4">Allergy to prescribed PrEP </td>
+                            <td width="23%"><obs id="allergN" conceptId="1433" answerConceptId="1066" answerLabel="No/Unknown" style="checkbox"/></td>
+                            <td width="17%" style="background-color: #696969;"><obs id="allergY" conceptId="1433" answerConceptId="1065" answerLabel="Yes" style="checkbox"/></td>
+                          </tr>
+                          <tr>
+                            <td colspan="4">Signs of accute HIV infection: Fever, Diffuse rash, and/or Enlarged lymph<br/> nodes </td>
+                            <td width="23%"><obs id="activeN" conceptId="7129" answerConceptId="1066" answerLabel="No" style="checkbox"/></td>
+                            <td width="17%" style="background-color: #696969;"><obs id="activeY" conceptId="7129" answerConceptId="1065" answerLabel="Yes" style="checkbox"/><sup>*</sup></td>
+                          </tr>
+                          <tr>
+                            <td colspan="4">Known Hepatitis B infection</td>
+                            <td width="23%">
+                                <obs id="HepaN" conceptId="7692" answerConceptId="1066" answerLabel="No" style="checkbox"/>
+                            </td>
+                            <td width="17%" style="background-color: #696969;"><obs id="HepaY" conceptId="7692" answerConceptId="1065" answerLabel="Yes" style="checkbox"/></td>
+                          </tr>
+                           <tr>
+                            <td colspan="4">Any Other Clinical condition, that in the opinion of the site investigator, would<br/> make the participant unsuitable for the study or unable to comply with dosing<br/>requirements</td>
+                            <td width="23%"><obs id="opinionN" conceptId="7691" answerConceptId="1066" answerLabel="No" style="checkbox"/></td>
+                            <td width="17%" style="background-color: #696969;"><obs id="opinionY" conceptId="7691" answerConceptId="1065" answerLabel="Yes" style="checkbox"/></td>
+                          </tr>
+                          <tr>
+                            <td>Initials: </td>
+                            <td colspan="5" align="right">* <em>Refer to clinic<br/> for care/ART</em></td>
+                          </tr>                         
+                         </table>
+                            </span>
+                    </td>
+                </tr>
+               <tr>
+                    <td style="font-weight:bold;" align="center">
+                        LABORATORY RESULTS<br/>PARTICIPANTS WITHOUT QUALIFYING HIV TEST RESULTS
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+      <table class="screen" width="98%" align="center">        
+        <tr style="font-weight:bold" align="center">
+          <td width="60%" colspan="2">Selection criterion</td>
+          <td width="20%">Include</td>
+          <td width="20%" style="background-color: #696969;">Exclude</td>
+        </tr>
+        <tr>
+          <td width="60%" colspan="2">Patients whose HIV status is unknown, negative by <br/>
+          Non-SEARCH testing, or whose negative SEARCH Testing is &gt;:</td>
+          <td width="20%"><obs id="hivtestN" conceptId="7451" answerConceptId="1848" answerLabel="Negative" style="checkbox"/></td>
+          <td width="20%" style="background-color: #696969;"><obs id="hivtestP" conceptId="7451" answerConceptId="1847" answerLabel="" style="checkbox"/>Positive<sup>*</sup></td>
+        </tr>
+        <tr>
+          <td colspan="4">Initials:
+          <div style="float:right">
+              * <em>Refer to clinic <br/>for care/ART</em>
+          </div>
+          </td>
+        </tr>
+      </table>
+        </td>
+        </tr>
+        <tr>
+            <td></td>
+        </tr>
+        <tr>
+            <td>
+            <table class="screen" align="center" width="98%">
+            <tr>
+            <td width="70%" colspan="2" ><strong>All criteria for study inclusion met?</strong><obs id="inclusion" conceptId="7141" answerConceptIds="1065,1066" answerLabels="Yes,No" style="radio"/></td>
+            <td width="30%">Initials: <encounterProvider type="autocomplete"/></td>
+            </tr>        
+            </table>
+            </td>
+        </tr>
+        <tr>
+        <td>     
+        <tr>
+            <td style="text-align:center;">
+                <div class="ke-form-buttons">
+                    <submit />
+                </div>
+            </td>
+        </tr>
+        </td>
+        </tr>
+        <tr>
+        <td style="font-style: italic;">Version 1.0; 12 February 2016</td>
+        </tr>
+        </tbody>
+        </table>
+    </htmlform>

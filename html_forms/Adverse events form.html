@@ -1,0 +1,154 @@
+<!--
+      ~ The contents of this file are subject to the OpenMRS Public License
+      ~ Version 1.0 (the "License"); you may not use this file except in
+      ~ compliance with the License. You may obtain a copy of the License at
+      ~ http://license.openmrs.org
+      ~
+      ~ Software distributed under the License is distributed on an "AS IS"
+      ~ basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
+      ~ License for the specific language governing rights and limitations
+      ~ under the License.
+      ~
+      ~ Copyright (C) OpenMRS, LLC.  All Rights Reserved.
+    -->
+<htmlform>
+
+    <style type="text/css">
+        table.screen {
+        border-collapse: collapse;
+        }
+        table.screen > tbody > tr > td, table.screen > tbody > tr > th {
+        border: 1px solid black;
+        vertical-align: baseline;
+        padding: 4px;
+        }
+    </style>
+    <script type="text/javascript">
+        beforeSubmit.push(function() {
+            // var val = getValue('height.value');
+            // if (val == null || val == '') {
+            //     getField('height.error').html('Required for males').show();
+            //     return false;
+            // }
+            return true;
+        });
+</script>
+
+
+        <table class="screen" align="center" width="970px">
+            <tbody>
+            <tr>
+                <td>
+                    <table>
+                        <tr>
+                    <td rowspan="2" width="10%"><b>SEARCH<br/> PrEP</b></td>
+                    <td rowspan="2" width="35%">Facility Name <encounterLocation type="dropdown"/></td>
+                    <td rowspan="2" width="35%">Participant initials:<lookup class="value" expression="patient.personName"/></td>
+                    <td style="background-color:lightcyan; font-weight:bold;">PrEP ID:<lookup class="value" expression="patient.getPatientIdentifier(3)"/></td> 
+                    </tr>
+                <tr>
+                    <td style="background-color:lightcyan;">SEARCH ID:<lookup class="value" expression="patient.getPatientIdentifier('SEARCH ID')"/></td>
+                </tr>
+                    </table>
+                </td>
+                </tr>                
+               <tr>
+                    <td style="background-color: #696969; color: #ffffff;" align="center">
+                        <strong>ADVERSE EVENT FORM</strong> RECORD ONLY GRADE 3 AND 4 AE’S and SERIOUS ADVERSE EVENTS (SAE’S)
+                    </td>
+               </tr>
+               <tr>
+                    <td>
+                        <table class="screen"  width="98%" align="center">
+                            <tr style="background-color: #696969; font-weight: bold; font-style: italic;">
+                                <td colspan="10">To be completed by study clinician on date event recorded</td>
+                                <td colspan="3">To be completed by clinical officer</td>
+                            </tr>
+                            <tr style="font-weight: bold;">                                
+                                <td rowspan="2">Event</td>
+                                <td rowspan="2">AE<br/>Code</td>
+                                <td rowspan="2">Start date</td>
+                                <td rowspan="2">Date event<br/>recorded</td>
+                                <td rowspan="2">Max Severity<sup>*</sup></td>
+                                <td colspan="3">Relationship to Study <br/>Drug<sup>§</sup> <br/>Enter Med Code</td>
+                                <td rowspan="2">SAE<br/>(Y/N)</td>
+                                <td rowspan="2">Un-<br/>expect.<br/>(Y/N)</td>
+                                <td rowspan="2">Event Reported?(Y/N)</td>
+                                <td rowspan="2">Outcome<sup>#</sup></td>
+                                <td rowspan="2">Stop date</td>
+                            </tr>
+                            <tr style="background-color: #696969; font-weight: bold; font-style: italic;">
+                                <td><obs id="arv1" conceptId="7201" answers="161,167,215,233" style="dropdown"/><br/></td>
+                                <td><obs id="arv2" conceptId="7407" answers="161,167,215,233"  style="dropdown"/></td>
+                                <td><obs id="arv3" conceptId="7408" answers="161,167,215,233"  style="dropdown"/></td>
+                            </tr>
+                            <repeat>
+                                <template>
+                                    <obsgroup groupingConceptId="7182">
+                                        <tr>
+                                            <!--<td><obs conceptId="6424" answerConceptIds="6415,6416,6417,6418,6419,6420" answerLabels="1,2,3,4,5,6" style="dropdown"/> </td>      Position-->
+                                            <td><obs id="ae" conceptId="7158" style="autocomplete"/></td>
+                                            <td><obs id="aeCode" conceptId="7169" size="10"/></td>
+                                            <td><obs id="startDate" conceptId="7183"/></td>
+                                            <td><encounterDate default="today"/></td>
+                                            <td><obs id="severity" conceptId="7112" answerConceptIds="7113,7114,7115,7116,1650" answerLabels="1=mild,2=moderate,3=severe,4=life-threatening,5=death" answerSeparator="&lt;br /&gt;" style="dropdown"/></td>
+                                            <td><obs id="relation1" conceptId="7208" answerConceptIds="7185,7186,7187,7188,7189,7190,1814" answerLabels="1=definitely related,2=probably related,3=possibly related,4=unlikely related,5=not related,6=pending,N/A=not on drug" style="dropdown"/></td>
+                                            <td><obs id="relation2" conceptId="7209" answerConceptIds="7185,7186,7187,7188,7189,7190,1814" answerLabels="1=definitely related,2=probably related,3=possibly related,4=unlikely related,5=not related,6=pending,N/A=not on drug" style="dropdown"/></td>
+                                            <td><obs id="relation3" conceptId="7210" answerConceptIds="7185,7186,7187,7188,7189,7190,1814" answerLabels="1=definitely related,2=probably related,3=possibly related,4=unlikely related,5=not related,6=pending,N/A=not on drug" style="dropdown"/></td>
+                                            <td><obs id="sae" conceptId="7182" answerConceptIds="1065,1066" answerLabels="Y,N" style="dropdown"/></td>
+                                            <td><obs id="expected" conceptId="7195" answerConceptIds="1065,1066" answerLabels="Y,N" style="dropdown"/></td>
+                                            <td><obs id="report2" conceptId="7196" answerConceptIds="1065,1066" answerLabels="Y,N" style="dropdown"/></td>
+                                            <td><obs id="outcome" conceptId="7194" answerConceptIds="7197,7198,7199,7200,1650,1067," answerLabels="1 = recovered/resolved,2 = recovering/resolving,3 = not recovered/not resolved,4 = recovered/resolved with sequelae,5 = death,6 = unknown" style="dropdown"/></td>
+                                            <td><obs id="stopDate" conceptId="7193"/></td>
+                                        </tr>
+                                    </obsgroup>
+                                </template>
+                                <render n="1" concept=" " />
+                                <render n="2" concept=" " />
+                                <render n="3" concept=" " />
+                                <render n="4" concept=" " />
+                                <render n="5" concept=" " />
+                                <render n="6" concept=" " />
+                            </repeat>
+                        </table>
+                    </td>
+                </tr>            
+                <tr>
+                    <td>
+                    <table>
+                        <tr>
+                            <td>Clinical Officer name: <encounterProvider type="autocomplete"/></td>
+                        </tr>
+                    </table>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <b><sup>*</sup>Severity:</b> Rank on scale 1-4: 1 = mild; 2 = moderate; 3 = severe; 4 = life-threatening; 5 = death
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <b><sup>§</sup>Severity:</b>Relationship: Please indicate either: 1 = definately related; 2 = probably related; 3 = possibly related; 4 = unlikey related; 5 = not related; 6 = pending; N/A = not on drug
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <b><sup>#</sup>Severity:</b>Outcome: Choose one: 1 = recovered/resolved; 2 = recovering/resolving; 3 = not recovered/not resolved; 4 = recovered/resolved with sequelae; 5 = death; 6 = unknown
+                    </td>
+                </tr>
+            <tr>
+                <td style="text-align:center;">
+                    <div class="ke-form-buttons">
+                        <submit />
+                    </div>
+                </td>
+            </tr>
+            <table>
+                <tr>
+                <td style="font-style: italic;">Version 1.0; 5 February 2016</td>
+                </tr>
+            </table>
+        </tbody>
+        </table>
+    </htmlform>

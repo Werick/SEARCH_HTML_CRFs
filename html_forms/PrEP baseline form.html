@@ -1,0 +1,590 @@
+<!--
+  ~ The contents of this file are subject to the OpenMRS Public License
+  ~ Version 1.0 (the "License"); you may not use this file except in
+  ~ compliance with the License. You may obtain a copy of the License at
+  ~ http://license.openmrs.org
+  ~
+  ~ Software distributed under the License is distributed on an "AS IS"
+  ~ basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
+  ~ License for the specific language governing rights and limitations
+  ~ under the License.
+  ~
+  ~ Copyright (C) OpenMRS, LLC.  All Rights Reserved.
+-->
+<htmlform>
+
+    <style type="text/css">
+        table.screen {
+        border-collapse: collapse;
+        }
+        table.screen > tbody > tr > td, table.screen > tbody > tr > th {
+        border: 1px solid black;
+        vertical-align: baseline;
+        padding: 4px;
+        }
+    </style>
+    
+    <script type="text/javascript">
+            var YES_CONCEPT_ID = 1065;
+            var NO_CONCEPT_ID = 1066;
+            var UNKNOWN_CONCEPT_ID = 1067;
+            var OTHER_CONCEPT_ID = 5622;
+            var NA_CONCEPT_ID = 1175;
+            var NOTDONE_CONCEPT_ID = 1118;
+            var NONE_CONCEPT_ID = 1107;
+            var SAE_CONCEPT_ID = 7158;
+            var GRADE234_CONCEPT_ID = 7129;
+            var CREATININE_CONCEPT_ID = 790;
+            var Gonorrhea_CONCEPT_ID = 1038;
+            var HEPB_CONCEPT_ID  =1325;
+            var Chlamydia_CONCEPT_ID=1034;
+                
+            
+        function validateTCA()
+        {
+            /* Validate TCA (Return visit date or Next appointment date) */
+            /*this data should be in Future but not more than 90 days from the currect date*/
+
+            var enc_date= new Date("<lookup expression="patient.encounterDate"/>").getTime();
+            var tca_date= new Date(getValue('tca.value')).getTime();
+            var NIGHTY_DAYS = 90 * 24 * 60 * 60 * 1000;
+            var future_tca=enc_date + NIGHTY_DAYS;
+            if(typeof tca_date != "undefined" || tca_date != null || tca_date != '')
+            {
+                if(tca_date &lt;= enc_date)
+                {
+                    getField('tca.error').html('Should not be less than the Encounter Date').show();
+                }
+                //check if the tca is greater than 90 days from the enc date
+                else if(tca_date &gt; future_tca )
+                {
+                    getField('tca.error').html('Should not be more than 90 days from Encounter Date').show();
+                }
+                else
+                {
+                    getField('tca.error').hide();
+                }
+            }
+        }
+
+        //Symptoms section skip pattern
+        function symptomSection ()
+        {
+            if (getValue('sympt.value') == NOTDONE_CONCEPT_ID  || getValue('sympt.value') == NO_CONCEPT_ID){
+                $j('#symptoms').find("input[type$='checkbox']").attr("checked", false);
+                $j('#symptoms').find("input[type$='checkbox']").attr("disabled", true);
+                $j('#symptoms').find("input[type$='text']").attr("value", '');
+                $j('#symptoms').find("input[type$='text']").attr("disabled", true);
+                
+                $j('#symptoms2').find("input[type$='checkbox']").attr("checked", false);
+                $j('#symptoms2').find("input[type$='checkbox']").attr("disabled", true);
+                $j('#symptoms2').find("input[type$='text']").attr("value", '');
+                $j('#symptoms2').find("input[type$='text']").attr("disabled", true);
+                
+                //disable the list of options in select
+                $j('#serCodes2 select option').each(function () {
+                    $j(this).prop('disabled', true);
+                });
+
+                //disable the list of options in select
+                $j('#serCodes1 select option').each(function () {
+                    $j(this).prop('disabled', true);
+                });
+
+                //disable the list of options in select
+                $j('#serCodes3 select option').each(function () {
+                    $j(this).prop('disabled', true);
+                });
+
+                //disable the list of options in select
+                $j('#serCodes4 select option').each(function () {
+                    $j(this).prop('disabled', true);
+                });
+
+                //disable the list of options in select
+                $j('#serCodes5 select option').each(function () {
+                    $j(this).prop('disabled', true);
+                });
+
+                //disable the list of options in select
+                $j('#serCodes6 select option').each(function () {
+                    $j(this).prop('disabled', true);
+                });
+
+                //reset the selected values in dropdown/select
+                setValue('serCodes1.value', '');
+                setValue('serCodes2.value', '');
+                setValue('serCodes3.value', '');
+                setValue('serCodes4.value', '');
+                setValue('serCodes5.value', '');
+                setValue('serCodes6.value', '');
+
+             } else {
+                 $j('#symptoms').find("input[type$='checkbox']").attr("disabled", false);
+                 $j('#symptoms').find("input[type$='select']").attr("disabled", false);
+                 $j('#symptoms').find("input[type$='text']").attr("disabled", false);
+
+                 $j('#symptoms2').find("input[type$='checkbox']").attr("disabled", false);
+                 $j('#symptoms2').find("input[type$='select']").attr("disabled", false);
+                 $j('#symptoms2').find("input[type$='text']").attr("disabled", false);
+
+                $j('#serCodes1 select option').each(function () {
+                    $j(this).prop('disabled', false);
+                });
+
+                $j('#serCodes2 select option').each(function () {
+                    $j(this).prop('disabled', false);
+                });
+
+                $j('#serCodes3 select option').each(function () {
+                    $j(this).prop('disabled', false);
+                });
+
+                $j('#serCodes4 select option').each(function () {
+                    $j(this).prop('disabled', false);
+                });
+
+                $j('#serCodes5 select option').each(function () {
+                    $j(this).prop('disabled', false);
+                });
+
+                $j('#serCodes6 select option').each(function () {
+                    $j(this).prop('disabled', false);
+                });
+        
+             }
+        }
+
+        //self risk assessment skip pattern
+        function selfAssessmentSection ()
+        {
+            if (getValue('selfAssessment.value') == NOTDONE_CONCEPT_ID ){
+                $j('#riskAssessQ1').find("input[type$='radio']").attr("checked", false);
+                $j('#riskAssessQ1').find("input[type$='radio']").attr("disabled", true);
+
+                $j('#riskAssessQ2').find("input[type$='radio']").attr("checked", false);
+                $j('#riskAssessQ2').find("input[type$='radio']").attr("disabled", true);
+
+                $j('#riskAssessQ3').find("input[type$='radio']").attr("checked", false);
+                $j('#riskAssessQ3').find("input[type$='radio']").attr("disabled", true);
+
+                $j('#riskAssessQ4').find("input[type$='radio']").attr("checked", false);
+                $j('#riskAssessQ4').find("input[type$='radio']").attr("disabled", true);
+             } else {
+                 $j('#riskAssessQ1').find("input[type$='radio']").attr("disabled", false);
+                 $j('#riskAssessQ2').find("input[type$='radio']").attr("disabled", false);
+                 $j('#riskAssessQ3').find("input[type$='radio']").attr("disabled", false);
+                 $j('#riskAssessQ4').find("input[type$='radio']").attr("disabled", false);
+             }
+        }
+
+        function prepProvidedSection(){
+            if (getValue('PrepProvided.value') == NO_CONCEPT_ID){
+                $j('#PrepCarryList').find("input[type$='checkbox']").attr("checked", false);
+                $j('#PrepCarryList').find("input[type$='checkbox']").attr("disabled", true);
+
+             } else {
+                 $j('#PrepCarryList').find("input[type$='checkbox']").attr("disabled", false);
+                
+             }
+        }
+
+        function creatineSection(){
+            if (getValue('ctOrder.value') == CREATININE_CONCEPT_ID){
+                $j('#ctResult').find("input[type$='text']").attr("disabled", false);
+
+             } else {
+                $j('#ctResult').find("input[type$='text']").attr("value", '');
+                $j('#ctResult').find("input[type$='text']").attr("disabled", true);                 
+                
+             }
+        }
+
+        function hepBSection(){
+            if (getValue('hepBOrder.value') == HEPB_CONCEPT_ID){
+                $j('#hepBResult').find("input[type$='radio']").attr("disabled", false);
+
+             } else {
+                $j('#hepBResult').find("input[type$='radio']").attr("checked", false);
+                $j('#hepBResult').find("input[type$='radio']").attr("disabled", true);
+                                 
+             }
+        }
+
+        function chlSection(){
+            if (getValue('chlOrder.value') == Chlamydia_CONCEPT_ID){
+                $j('#chlResult').find("input[type$='radio']").attr("disabled", false);
+
+             } else {
+                $j('#chlResult').find("input[type$='radio']").attr("checked", false);
+                $j('#chlResult').find("input[type$='radio']").attr("disabled", true);
+                                 
+             }
+        }
+
+        function gnSection(){
+            if (getValue('gnOrder.value') == Gonorrhea_CONCEPT_ID){
+                $j('#gnResult').find("input[type$='radio']").attr("disabled", false);
+
+             } else {
+                $j('#gnResult').find("input[type$='radio']").attr("checked", false);
+                $j('#gnResult').find("input[type$='radio']").attr("disabled", true);
+              }
+        }
+
+        /* Form Skipping Pattern based on the selected value*/
+        $j(function(){
+         // $j('#hosp input').click(onHOSPChange);
+         symptomSection();
+         $j('#sympt input').click(symptomSection);
+         // $j('#suspectSae input').click(onSUSPECTSAEChange);
+         // $j('#suspect234 input').click(onSUSPECT234Change);
+         // $j('#referOther input').click(onREFEROTHERChange);
+         // $j('#arvQuant input').click(onARVQUANTChange);
+         // $j('#lab input').click(onLABChange);        
+         // $j('#O_creatinine input').click(onO_CREATININEChange);
+
+        //self risk assessment skip pattern
+        selfAssessmentSection();
+        $j('#selfAssessment input').click(selfAssessmentSection);
+
+        //Medication dispensing skip pattern
+        prepProvidedSection()
+        $j('#PrepProvided input').click(prepProvidedSection);
+
+        //Lab tests skip pattern
+        creatineSection()
+        $j('#ctOrder input').click(creatineSection);
+        
+        hepBSection()
+        $j('#hepBOrder input').click(hepBSection);
+
+        chlSection()
+        $j('#chlOrder input').click(chlSection);
+
+        gnSection()
+        $j('#gnOrder input').click(gnSection);
+
+         
+                
+        /*validate Fields by avoiding invalide feed*/
+        getField('tca.value').change(validateTCA);
+        getField('pregnantY.value').change(function(){
+            if(getValue('pregnantY.value')== YES_CONCEPT_ID)
+                setValue('pregnantN.value', '')
+        });
+        
+        getField('suspectSae.value').change(function(){
+            if(getValue('suspectSae.value')== SAE_CONCEPT_ID)
+                setValue('sae.value', '')
+        });
+        getField('suspect234.value').change(function(){
+            if(getValue('suspect234.value')== GRADE234_CONCEPT_ID)
+                setValue('dise.value', '')
+        });
+        getField('referOther.value').change(function(){
+            if(getValue('referOther.value')== OTHER_CONCEPT_ID)
+                setValue('otherSpecify.value', '')
+        });
+
+        
+        // onSYMPTChange();
+        // onSUSPECTSAEChange();
+        // onSUSPECT234Change();
+        // onREFEROTHERChange();
+        // onLABChange();
+        // onO_CREATININEChange();
+        // validateTCA();        
+        });
+    </script>    
+    
+    <table class="screen" align="center" width="1000px">
+        <tbody>
+            <tr>
+                <td>
+                <table width="100%">
+                    <tr>
+                    <td rowspan="2" width="10%"><b>SEARCH<br/> PrEP</b></td>
+                    <td rowspan="2" width="20%">Today's date <encounterDate default="today"/></td>
+                    <td rowspan="2" width="25%">Facility Name <encounterLocation type="dropdown"/></td>
+                    <td rowspan="2" width="25%">Participant initials:<lookup class="value" expression="patient.personName"/></td>
+                    <td style="background-color:lightcyan; font-weight:bold;">PrEP ID:<lookup class="value" expression="patient.getPatientIdentifier(3)"/></td> 
+                    </tr>
+                    
+                    <tr>
+                            <td style="background-color:lightcyan; font-weight:bold;">SEARCH ID:<lookup class="value" expression="patient.getPatientIdentifier(11)"/></td>
+                    </tr>
+                </table>
+                </td>
+            </tr>
+           <tr>
+                <td style="background-color: #696969; color: #ffffff; font-weight:bold" align="center">
+                        BASELINE VISIT FORM
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <table class="screen" width="98%" align="center">
+                        <tr>
+                                <td colspan="10" align="center"><strong>SYMPTOM SCREEN</strong><obs id="sympt" conceptId="7109" answerConceptIds="1066,1118" answerLabels="No Current Symptoms,Not Done" style="radio"/>
+                                </td>
+                        </tr>
+                        <tr>
+                            <td colspan="5">
+                        <span id="symptoms">
+                        <table class="screen" width="98%" align="center">
+                        <tr style="font-weight:bold;" align="center">
+                            <td>Symptom</td>
+                            <td>Absent</td>
+                            <td>Severity<sup>*</sup></td>
+                            <td>Duration <br/>(days)</td>
+                        </tr>
+                        <tr>
+                            <obsgroup groupingConceptId="7110">
+                                <td>Cutaneous rash</td>
+                                <td><obs conceptId="7111" answerConceptId="7222" style="checkbox" answerLabel=""/></td>
+                                <td><obs id="serCodes1" conceptId="7112" answerConceptIds="7113,7114,7115,7116" answerLabels="1 = Mild, 2 = Moderate, 3 = Severe, 4 = Life-threatening" style="checkbox"/></td>
+                                <td><obs conceptId="7665"/></td>
+                            </obsgroup>
+                        </tr>
+                         <tr>
+                            <obsgroup groupingConceptId="7110">
+                                <td>Nausea</td>
+                                <td><obs conceptId="7111" answerConceptId="5978" style="checkbox" answerLabel=""/></td>
+                                <td><obs id="serCodes2" conceptId="7112" answerConceptIds="7113,7114,7115,7116" answerLabels="1 = Mild, 2 = Moderate, 3 = Severe, 4 = Life-threatening" style="checkbox"/></td>
+                                <td><obs conceptId="7665"/></td>
+                            </obsgroup>
+                        </tr>
+                        <tr>
+                            <obsgroup groupingConceptId="7110">
+                                <td>Signs of accute HIV infection: Fever, Diffuse rash, <br/>and/or Enlarged lymph nodes</td>
+                                <td><obs conceptId="7111" answerConceptId="7666" style="checkbox" answerLabel=""/></td>
+                                <td><obs id="serCodes3" conceptId="7112" answerConceptIds="7113,7114,7115,7116" answerLabels="1 = Mild, 2 = Moderate, 3 = Severe, 4 = Life-threatening" style="checkbox"/></td>
+                                <td><obs conceptId="7665"/></td>
+                            </obsgroup>
+                        </tr>                            
+                    </table>
+                    </span>
+                            </td>
+                            <td colspan="5">
+                        <span id="symptoms2">
+                        <table class="screen" width="98%" align="center">
+                        <tr style="font-weight:bold;" align="center">
+                            <td>Symptom</td>
+                            <td>Absent</td>
+                            <td>Severity<sup>*</sup></td>
+                            <td>Duration <br/>(days)</td>
+                        </tr>
+                        <tr>
+                            <obsgroup groupingConceptId="7110">
+                                <td>Vomiting</td>
+                                <td><obs conceptId="7111" answerConceptId="5980" style="checkbox" answerLabel=""/></td>
+                                <td><obs id="serCodes4" conceptId="7112" answerConceptIds="7113,7114,7115,7116" answerLabels="1 = Mild, 2 = Moderate, 3 = Severe, 4 = Life-threatening" style="checkbox"/></td>
+                                <td><obs conceptId="7665"/></td>
+                            </obsgroup>
+                        </tr>
+                         <tr>
+                            <obsgroup groupingConceptId="7110">
+                                <td>Diarrhea</td>
+                                <td><obs conceptId="7111" answerConceptId="6115" style="checkbox" answerLabel=""/></td>
+                                <td><obs id="serCodes5" conceptId="7112" answerConceptIds="7113,7114,7115,7116" answerLabels="1 = Mild, 2 = Moderate, 3 = Severe, 4 = Life-threatening" style="checkbox"/></td>
+                                <td><obs conceptId="7665"/></td>
+                            </obsgroup>
+                        </tr>
+                        <tr>
+                            <obsgroup groupingConceptId="7110">
+                                <td>Other</td>
+                                <td><obs conceptId="7111" answerConceptId="5622" style="checkbox" answerLabel=""/></td>
+                                <td><obs id="serCodes6" conceptId="7112" answerConceptIds="7113,7114,7115,7116" answerLabels="1 = Mild, 2 = Moderate, 3 = Severe, 4 = Life-threatening" style="checkbox"/></td>
+                                <td><obs conceptId="7665"/></td>
+                            </obsgroup>
+                        </tr>                            
+                        </table>
+                    </span>
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+            <tr align="center">
+                 <td>
+                    <em><sup>*</sup> Severity</em> <i>Rank on scale of 1-4:  1 = Mild; 2 = Moderate; 3 = Severe; 4 = life-threatening;</i>
+                </td>
+            </tr>
+
+            <tr>
+            <td>
+                <table class="screen" width="98%" align="center">
+                        <tr>
+                            <td colspan="2" align="center"><strong>SELF-RISK ASSESSMENT AND PrEP DELIVERY</strong>
+                            <div style="float:right;">
+                            <obs id="selfAssessment" conceptId="7667" answerConceptId="1118" style="checkbox" answerLabel="Not Done"/>
+                            </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Does the participant think he/she is at risk for HIV infection?</td>
+                            <td>
+                            <div id="riskAssessQ1">
+                                <obs id="riskOfInfection" conceptId="7668" answerConceptIds="1065,1066" answerLabels="Yes,No" style="radio"/>
+                            </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Does the participant think he/she will be at risk for HIV infection in next 3 months?</td>
+                            <td>
+                            <div id="riskAssessQ2">
+                            <obs id="riskOfInfectionIn3" conceptId="7669" answerConceptIds="1065,1066" answerLabels="Yes,No" style="radio"/>
+                            </div>
+                            </td>                            
+                        </tr>
+                        <tr>
+                            <td>Does the participant know anyone who is at risk for HIV infection?</td>
+                            <td>
+                            <div id="riskAssessQ3">
+                            <obs id="riskKnown" conceptId="7670" answerConceptIds="1065,1066" answerLabels="Yes,No" style="radio"/>
+                            </div>
+                            </td>                            
+                        </tr>
+                        <tr>
+                            <td>If the participant had a choice, would he/she prefer to pick up PrEP medications at this clinic or else in the community?</td>
+                            <td>
+                            <div id="riskAssessQ4">
+                                <obs id="community" conceptId="7672" answerConceptIds="1691,7671" answerLabels="Clinic,Offsite" style="radio"/>
+                            </div>
+                            </td>                            
+                        </tr>
+                    </table>
+            </td>
+            </tr>
+            <tr>
+                <td>
+                    <table class="screen" width="98%" align="center">
+                        <tr>
+                            <td colspan="2" align="center"><strong>MEDICATION DISPENSING</strong></td>
+                        </tr>
+                        <tr>
+                            <td>Is PrEP Being provided today?</td>
+                            <td>
+                            <obs id="PrepProvided" conceptId="7673" answerConceptIds="1065,1066" answerLabels="Yes,No" style="radio"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>If yes, what packaging is being provided? <i>(Tick All that Apply)</i></td>
+                            <td>
+                            <div id="PrepCarryList">
+                                 <obs id="PrepBottle" conceptId="7677" answerConceptId="7674" answerLabel="Bottles" style="checkbox"/>
+                                <obs id="PrepBlister" conceptId="7677" answerConceptId="7675" answerLabel="Blister Cards" style="checkbox"/>
+                                <obs id="PrepEnvelope" conceptId="7677" answerConceptId="7676" answerLabel="Envelopes" style="checkbox"/>
+                                <obs id="prepOther" conceptId="7677" answerConceptId="5622" answerLabel="Other" style="checkbox"/>
+                                <obs id="prepNA" conceptId="7677" answerConceptId="1175" answerLabel="N/A" style="checkbox"/>
+                            </div>
+                           
+                            </td>                            
+                        </tr>                        
+                    </table>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                <table class="screen"  width="98%" align="center">
+                    <tr>
+                        <td colspan="8" align="center" style="font-weight:bold">
+                        LAB TESTS 
+                        <div style="float:right;">
+                            <obs id="lab" conceptId="1271" answerConceptId="1107" answerLabel="Not done" style="checkbox"/>
+                        </div>                        
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="4">
+                        <span id="laboratory1">
+                        <table class="screen"  width="98%" align="center">
+                        <tr style="font-weight: bold;" align="center">
+                        <td>Test</td>
+                        <td>Ordered?</td>
+                        <td>Result</td>                              
+                        </tr>
+                        <tr align="center">
+                        <td>Creatinine</td>
+                        <td><obs id="ctOrder" conceptId="1271" answerConceptId="790" answerLabel=""/></td>
+                        <td>
+                        <div id="ctResult">
+                            <obs conceptId="790" answerConceptId="790" showUnits="mg/dL"/><br/><br/><br/>
+                        </div>
+                            
+                        </td>                              
+                        </tr> 
+                        <tr align="center">
+                        <td>Optional:Gonorrhea(urine)</td>
+                        <td><obs id="gnOrder" conceptId="1271" answerConceptId="1038" answerLabel=""/></td>
+                        <td align="left">
+                        <div id="gnResult">
+                            <obs conceptId="1038" answerConceptIds="703,664,1304" answerLabels="Positive,Negative,Sample lost/failed" answerSeparator="&lt;br /&gt;" style="radio"/>
+                        </div>
+                        </td>                              
+                        </tr>                   
+                        </table>                    
+                        </span>
+                        </td>
+                        <td colspan="4">
+                        <span id="laboratory2">
+                        <table class="screen"  width="98%" align="center">
+                        <tr style="font-weight: bold;" align="center">
+                        <td>Test</td>
+                        <td>Ordered?</td>
+                        <td>Result</td>                              
+                        </tr>
+                        <tr align="center">
+                        <td>Optional: Hep B Surface <br/> antigen</td>
+                        <td>
+                        <obs id="hepBOrder" conceptId="1271" answerConceptId="1325" answerLabel=""/></td>
+                        <td align="left">
+                        <div id="hepBResult">
+                            <obs conceptId="1325" answerConceptIds="703,664,1304" answerLabels="Positive,Negative,Sample lost/failed" answerSeparator="&lt;br /&gt;" style="radio"/>
+                        </div>
+                        </td>                              
+                        </tr> 
+                        <tr align="center">
+                        <td>Optional:Chlamydia<br/>(urine - females only)</td>
+                        <td><obs id="chlOrder" conceptId="1271" answerConceptId="1034" answerLabel=""/></td>
+                        <td align="left">
+                        <div id="chlResult">
+                            <obs conceptId="1034" answerConceptIds="703,664,1304" answerLabels="Positive,Negative,Sample lost/failed" answerSeparator="&lt;br /&gt;" style="radio"/>
+                        </div>
+                        </td>                              
+                        </tr>                   
+                        </table>
+                        </span>
+                        </td>
+                    </tr>
+                </table>
+                </td>
+            </tr>    
+            <tr>
+                <td>
+                <table>
+                        <td><b>Date of Next scheduled visit:</b> <obs id="tca" conceptId="5096" allowFutureDates="true"/></td>
+                    <tr>
+                        <td><b>Health care worker name:</b>  <encounterProvider type="autocomplete"/></td>
+                        <td align="right">
+                            
+                        </td>
+                    </tr>
+                </table>
+                </td>
+            </tr>
+            
+        <tr>
+            <td style="text-align:center;">
+                <div class="ke-form-buttons">
+                    <submit />
+                </div>
+            </td>
+        </tr>
+            <tr>
+            <td style="font-style: italic;">Version 1.0; 28 April 2016</td>
+            </tr>        
+    </tbody>
+    </table>
+</htmlform>

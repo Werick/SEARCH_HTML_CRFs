@@ -1,0 +1,304 @@
+<!--
+      ~ The contents of this file are subject to the OpenMRS Public License
+      ~ Version 1.0 (the "License"); you may not use this file except in
+      ~ compliance with the License. You may obtain a copy of the License at
+      ~ http://license.openmrs.org
+      ~
+      ~ Software distributed under the License is distributed on an "AS IS"
+      ~ basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
+      ~ License for the specific language governing rights and limitations
+      ~ under the License.
+      ~
+      ~ Copyright (C) OpenMRS, LLC.  All Rights Reserved.
+    -->
+<htmlform>
+
+    <style type="text/css">
+        table.screen {
+        border-collapse: collapse;
+        }
+        table.screen > tbody > tr > td, table.screen > tbody > tr > th {
+        border: 1px solid black;
+        vertical-align: baseline;
+        padding: 4px;
+        }
+    </style>
+
+    <script type="text/javascript">
+        var INELIGIBLE_CONCEPT_ID = 7180;
+        var UNKNOWN_CONCEPT_ID = 1067;
+        var OTHER_CONCEPT_ID = 5622;
+        var DEATH_CONCEPT_ID = 1650;
+        var WITHDRAWAL_CONSENT_CONCEPT_ID = 7181;
+        var MOVE_CONCEPT_ID = 6602;
+
+        function disableQ1() {
+            $j('#q1').find("input[type$='radio']").attr("disabled", true);  
+            $j('#q1').find("input[type$='text']").attr("disabled", true);
+            $j('#q1').find("input[type$='text']").attr("value", '');  
+            $j('#q1').find("input[type$='radio']").attr("checked", false); 
+        }
+
+        function enableQ1() {
+            $j('#q1').find("input[type$='radio']").attr("disabled", false);
+        }
+
+        function disableQ2() {
+            $j('#q2').find("input[type$='text']").attr("disabled", true);
+            $j('#q2').find("input[type$='text']").attr("value", null);
+        }
+
+        function enableQ2() {
+            $j('#q2').find("input[type$='text']").attr("disabled", false);
+        }
+
+
+
+        //skip pattern for inelligible reason
+        function ineligibleReasonSection(){
+            // alert(getValue('unable.value'))
+            if (getValue('unable.value') == INELIGIBLE_CONCEPT_ID ){
+                
+                enableQ1();                
+                // $j('#q1').find("input[type$='text']").attr("disabled", false); 
+                setValue('move.value',null);
+                setValue('unableother.value',null); 
+                setValue('consent.value',null);
+                setValue('death.value',null);
+
+                $j('#q2').find("input[type$='text']").attr("disabled", true);
+                $j('#q2').find("input[type$='text']").attr("value", null);
+               
+             } else {                 
+                disableQ1() 
+             }
+        }
+
+        //skip pattern for inelligible reason
+        function ineligibleOthersubSection(){
+            // alert(getValue('unable.value'))
+            if (getValue('eligRsn.value') == OTHER_CONCEPT_ID ){
+                $j('#q1').find("input[type$='text']").attr("disabled", false);  
+               
+             } else {                  
+                $j('#q1').find("input[type$='text']").attr("disabled", true);
+                $j('#q1').find("input[type$='text']").attr("value", '');    
+             }
+        }
+
+
+        //skip pattern for inelligible reason
+        function ineligibleReasonOtherSection(){
+            // alert(getValue('unable.value'))
+            if (getValue('unableother.value') == OTHER_CONCEPT_ID){
+                
+                enableQ2();
+                setValue('move.value',null);
+                setValue('unable.value',null); 
+                setValue('consent.value',null);
+                setValue('death.value',null);  
+            
+             } else {                 
+                
+                disableQ2();                
+             }
+        }
+
+        function whenMoveReason() {
+            setValue('unableother.value',null);
+            setValue('unable.value',null); 
+            setValue('consent.value',null);
+            setValue('death.value',null);
+            disableQ2();
+            disableQ1();
+        }
+
+        function whenDeathReason() {
+            setValue('unableother.value',null);
+            setValue('unable.value',null); 
+            setValue('consent.value',null);
+            setValue('move.value',null);
+            disableQ2();
+            disableQ1();
+        }
+
+        function whenConsentReason() {
+            setValue('unableother.value',null);
+            setValue('unable.value',null); 
+            setValue('move.value',null);
+            setValue('death.value',null);
+            disableQ2();
+            disableQ1();
+        }
+
+        $j(function () {
+            ineligibleReasonSection();
+            $j('#unable input').click(ineligibleReasonSection);
+
+            ineligibleReasonOtherSection();
+            $j('#unableother input').click(ineligibleReasonOtherSection);
+
+            ineligibleOthersubSection();
+            $j('#eligRsn input').click(ineligibleOthersubSection);
+
+            $j('#consent input').click(whenConsentReason);
+            $j('#move input').click(whenMoveReason);
+            $j('#death input').click(whenDeathReason);
+        });
+    </script>
+
+        <table class="screen" align="center" width="1000px">
+            <tbody>
+                <tr>
+                <td>
+                    <table>
+                        <tr>
+                    <td rowspan="2" width="10%"><b>SEARCH<br/> PrEP</b></td>
+                    <td rowspan="2" width="20%">Today's date <encounterDate default="today"/></td>
+                    <td rowspan="2" width="25%">Facility Name <encounterLocation type="dropdown"/></td>
+                    <td rowspan="2" width="25%">Participant initials:<lookup class="value" expression="patient.personName"/></td>
+                    <td style="background-color:lightcyan; font-weight:bold;">PrEP ID:<lookup class="value" expression="patient.getPatientIdentifier(3)"/></td> 
+                    </tr>
+                <tr>
+                    <td style="background-color:lightcyan;">SEARCH ID:<lookup class="value" expression="patient.getPatientIdentifier('SEARCH ID')"/></td>
+                </tr>
+                    </table>
+                </td>
+                </tr>
+                <tr>
+                    <td style="background-color: #696969; color: #ffffff; font-weight: bold;" align="center">
+                        <a name="page1"></a>
+                        Withdrawal FORM or Move Form
+                    </td>
+                </tr> 
+                <tr>
+                    <td></td>
+                </tr>              
+               <tr>
+                    <td style="background-color: #696969; color: #ffffff; font-weight: bold;" align="center">
+                            SUBJECT WITHDRAWAL
+                    </td>
+               </tr>
+               <tr>
+                    <td>
+                        <table class="screen"  width="98%" align="center">
+                            <tr style="font-weight: bold;">
+                                <td align="center" width="50%">REASON FOR SUBJECT WITHDRAWAL</td>
+                                <td align="center">CRITERIA FOR WITHDRAWAL DATE DETERMINATION</td>
+                            </tr>
+                            <tr>
+                                <td>INVESTIGATOR DECISION<br/><br/>
+                                    <obs id="unable" conceptId="1657" answerConceptId="7180" answerLabel="Participant determined to be ineligible (select reason)" style="checkbox"/><br/>
+                                    <table>
+                                        <tr>
+                                            <td>
+                                            <div id="q1">
+                                                 <obs  id="eligRsn" conceptId="7690" answerConceptIds="1539,5622" answerLabels="Positive HIV test,Other reason for ineligibility" style="radio" answerSeparator="&lt;br /&gt;"/>
+                                                <obs id="eligother" conceptId="7047" answerLabel="explain" style="text"/>
+                                            </div>                                               
+                                            </td>
+                                        </tr>
+                                    </table>
+                                    <br/>
+                                    <obs id="unableother" conceptId="1657" answerConceptId="5622" answerLabel="Other Reason fro withdrawal" style="checkbox"/>
+                                    <div id="q2" style="float:right;">
+                                        <obs conceptId="7689" answerLabel="explain" style="text"/>
+                                    </div>
+                                    
+                                </td>
+                                <td>Withdrawal date = date of investigator’s decision</td>
+                            </tr>
+                            <tr>
+                                <td>PARTICIPANT DECISION <br/><br/>
+                                    <obs id="consent" conceptId="1657" answerConceptId="7181" answerLabel="" style="checkbox"/>Withdrawal of informed consent
+                                </td>
+                                <td>Withdrawal date = date of withdrawal of informed 
+                                consent</td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <obs id="death" conceptId="1657" answerConceptId="1650" answerLabel="" style="radio"/>Study subject death
+                                </td>
+                                <td>Withdrawal date=date of death</td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                    <table class="screen" align="center" width="98%">
+                        <tr>
+                            <td align="center">
+                            <strong>WITHDRAWAL DATE: </strong><obs id="withdrawDate" conceptId="1656"/></td>
+                        </tr>
+                    </table>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                    <table class="screen" align="center" width="98%">
+                        <tr>
+                            <td>
+                            <table width="100%">
+                                <tr>
+                                <td align="center">
+                                    <b align="center">SUBJECT MOVED </b>
+                                </td>                           
+                                </tr>
+                                <tr>
+                                    <td>
+                                    <obs id="move" conceptId="1657" answerConceptId="6602" answerLabel="Participant moved from the study community" style="checkbox"/>
+                                </td>
+                                </tr>
+                            </table>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <table width="100%">
+                                    <tr>
+                            <td align="left">
+                                <b>MOVE DATE: </b><obs conceptId="7574" answerLabel="" style="date"/>
+                                </td>
+                                <td align="center">
+                                <obs conceptId="6602" answerConceptId="1067" answerLabel="Unknown" style="checkbox"/>
+                                </td>
+                                <td align="left">
+                                If only part of the date is known, enter UK for unknown field(s)<br/>
+                                if none of the date is known, tick Unknown
+                                </td>
+                        </tr>
+                                </table>
+                            </td>
+                        </tr>
+                    </table>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                    <table class="screen" align="center" width="98%">
+                        <tr>
+                            <td align="left">Completed by<encounterProvider type="autocomplete"/>(initials) </td>
+                        </tr>
+                    </table>
+                    </td>
+                </tr>
+            <tr>
+                <td style="text-align:center;">
+                    <div class="ke-form-buttons">
+                        <submit />
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <table>
+                        <tr>
+                        <td style="font-style: italic;">Version 1.0; 18 April 2016</td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+        </tbody>
+        </table>
+    </htmlform>
