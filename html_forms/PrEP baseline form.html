@@ -170,11 +170,15 @@
 
                 $j('#riskAssessQ4').find("input[type$='radio']").attr("checked", false);
                 $j('#riskAssessQ4').find("input[type$='radio']").attr("disabled", true);
+
+                $j('#riskAssessQ5').find("input[type$='radio']").attr("checked", false);
+                $j('#riskAssessQ5').find("input[type$='radio']").attr("disabled", true);
              } else {
                  $j('#riskAssessQ1').find("input[type$='radio']").attr("disabled", false);
                  $j('#riskAssessQ2').find("input[type$='radio']").attr("disabled", false);
                  $j('#riskAssessQ3').find("input[type$='radio']").attr("disabled", false);
                  $j('#riskAssessQ4').find("input[type$='radio']").attr("disabled", false);
+                 $j('#riskAssessQ5').find("input[type$='radio']").attr("disabled", false);
              }
         }
 
@@ -439,9 +443,17 @@
                             </td>                            
                         </tr>
                         <tr>
-                            <td>Does the participant know anyone who is at risk for HIV infection?</td>
+                            <td>Is the participant currently in a discordant relationship?</td>
                             <td>
                             <div id="riskAssessQ3">
+                            <obs id="riskOfInfectionIn4" conceptId="6096" answerConceptIds="1065,1066" answerLabels="Yes,No" style="radio"/>
+                            </div>
+                            </td>                            
+                        </tr>
+                        <tr>
+                            <td>Does the participant know anyone who is at risk for HIV infection?</td>
+                            <td>
+                            <div id="riskAssessQ4">
                             <obs id="riskKnown" conceptId="7670" answerConceptIds="1065,1066" answerLabels="Yes,No" style="radio"/>
                             </div>
                             </td>                            
@@ -449,7 +461,7 @@
                         <tr>
                             <td>If the participant had a choice, would he/she prefer to pick up PrEP medications at this clinic or else in the community?</td>
                             <td>
-                            <div id="riskAssessQ4">
+                            <div id="riskAssessQ5">
                                 <obs id="community" conceptId="7672" answerConceptIds="1691,7671" answerLabels="Clinic,Offsite" style="radio"/>
                             </div>
                             </td>                            
